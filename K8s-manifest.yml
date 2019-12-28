@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-cntr-multitool
+  labels:
+    app: test-cntr-multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-cntr-multitool
+  template:
+    metadata:
+      labels:
+        app: test-cntr-multitool
+    spec:
+      containers:
+      - name: test-cntr-multitool
+        image: tse77/cntr-multitool
+        command: [./api]
+        args:
+        env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: MY_POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: MY_POD_SERVICE_ACCOUNT
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.serviceAccountName
+          - name: MY_POD_UID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.uid
+          - name: MY_CPU_REQUEST
+            valueFrom:
+              resourceFieldRef:
+                containerName: test-cntr-multitool
+                resource: requests.cpu
+          - name: MY_CPU_LIMIT
+            valueFrom:
+              resourceFieldRef:
+                containerName: test-cntr-multitool
+                resource: limits.cpu
+          - name: MY_MEM_REQUEST
+            valueFrom:
+              resourceFieldRef:
+                containerName: test-cntr-multitool
+                resource: requests.memory
+          - name: MY_MEM_LIMIT
+            valueFrom:
+              resourceFieldRef:
+                containerName: test-cntr-multitool
+                resource: limits.memory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-cntr-multitool
+  labels:
+    app: test-cntr-multitool
+spec:
+  type: NodePort
+  selector: test-cntr-multitool
+  ports:
+  - nodePort: 30163
+    port: 9100
+    targetPort: 9100
+  selector:
+    app: test-cntr-multitool
