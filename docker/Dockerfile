@@ -15,5 +15,4 @@ RUN apk	add curl \
 	drill
 
 EXPOSE 9100
-ADD api /
-CMD ["./api"]
+CMD ["/bin/sh", "-c", "while true; do sleep 5; done;"]
