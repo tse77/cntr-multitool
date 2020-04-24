@@ -18,6 +18,8 @@ spec:
       - name: test-cntr-multitool
         image: tse77/cntr-multitool
         command: [./api]
+        securityContext:
+          privileged: true
         args:
         env:
           - name: MY_NODE_NAME
@@ -68,15 +70,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-cntr-multitool
+  name: multitool
   labels:
-    app: test-cntr-multitool
+    app: multitool
 spec:
   type: NodePort
-  selector: test-cntr-multitool
+  selector: multitool
   ports:
-  - nodePort: 30163
-    port: 9100
-    targetPort: 9100
+    - port: 9100
   selector:
-    app: test-cntr-multitool
+    app: multitool
