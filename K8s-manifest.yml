@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-cntr-multitool
+  name: multitool
   labels:
-    app: test-cntr-multitool
+    app: multitool
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-cntr-multitool
+      app: multitool
   template:
     metadata:
       labels:
-        app: test-cntr-multitool
+        app: multitool
     spec:
       containers:
-      - name: test-cntr-multitool
+      - name: multitool
         image: tse77/cntr-multitool
         command: [./api]
         securityContext:
