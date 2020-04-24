@@ -12,9 +12,10 @@ RUN apk	add curl \
 	findutils \
 	grep \
 	tcpdump \
-	drill \
 	mysql-client \
-	bind-tools
+	postgresql-client \
+	bind-tools \
+	drill
 
 EXPOSE 9100
 CMD ["/bin/sh", "-c", "while true; do sleep 5; done;"]
