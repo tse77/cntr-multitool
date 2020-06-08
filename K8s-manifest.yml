@@ -17,9 +17,12 @@ spec:
       containers:
       - name: multitool
         image: tse77/cntr-multitool
-        command: [./api]
+        command: [./cntr-multitool]
         securityContext:
           privileged: true
+        ports:
+          - name: http
+            containerPort: 9100
         args:
         env:
           - name: MY_NODE_NAME
@@ -49,22 +52,22 @@ spec:
           - name: MY_CPU_REQUEST
             valueFrom:
               resourceFieldRef:
-                containerName: test-cntr-multitool
+                containerName: multitool
                 resource: requests.cpu
           - name: MY_CPU_LIMIT
             valueFrom:
               resourceFieldRef:
-                containerName: test-cntr-multitool
+                containerName: multitool
                 resource: limits.cpu
           - name: MY_MEM_REQUEST
             valueFrom:
               resourceFieldRef:
-                containerName: test-cntr-multitool
+                containerName: multitool
                 resource: requests.memory
           - name: MY_MEM_LIMIT
             valueFrom:
               resourceFieldRef:
-                containerName: test-cntr-multitool
+                containerName: multitool
                 resource: limits.memory
 ---
 apiVersion: v1
@@ -78,5 +81,6 @@ spec:
   selector: multitool
   ports:
     - port: 9100
+      targetPort: 9100
   selector:
     app: multitool
